@@ -7,6 +7,10 @@ import cors from 'cors'
 import template from '../template'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
+//only during development
+import devBundle from './devBundle'
+import path from 'path'
+const CURRENT_WORKING_DIR = process.cwd()
 
 const app = express()
 /**... configure express ... */
@@ -20,6 +24,8 @@ app.use(cors())
 app.use('/', userRoutes)
 app.use('/', authRoutes)
 
+app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
+
 app.get('/', (req, res) => {
     res.status(200).send(template())
 })
@@ -32,5 +38,8 @@ app.use((err, req, res, next) => {
         console.log(err)
     }
 })
+
+// only during development
+devBundle.compile(app)
 
 export default app

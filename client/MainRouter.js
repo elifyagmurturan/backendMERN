@@ -8,7 +8,8 @@ const MainRouter = () => {
         <Switch>
             <Route exact path="/" component={Home}/>
         </Switch>
-    </div>)
+    </div>
+    )
 }
 
 export default MainRouter

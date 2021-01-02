@@ -5,7 +5,10 @@ import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
 import Typography from 'material-ui/Typography'
 import Icon from 'material-ui/Icon'
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
 import UseStyles from './../styles'
+import {Link} from 'react-router-dom'
+import {create} from './api-user.js'
 
 export default function Signup() {
   const classes = UseStyles()
@@ -68,6 +71,23 @@ export default function Signup() {
             className={classes.submit}>Submit</Button>
         </CardActions>
       </Card>
+
+    <Dialog open={values.open} disableBackdropClick={true}>
+    <DialogTitle>New Account</DialogTitle>
+    <DialogContent>
+      <DialogContentText>
+          New account successfully created.
+      </DialogContentText>
+    </DialogContent>
+    <DialogActions>
+        <Link to="/signin">
+          <Button color="primary" autoFocus="autoFocus" 
+                  variant="contained">
+              Sign In
+          </Button>
+        </Link>
+    </DialogActions>
+    </Dialog>
     </div>
     )
 

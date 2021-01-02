@@ -10,9 +10,7 @@ import authRoutes from './routes/auth.routes'
 //only during development
 import devBundle from './devBundle'
 
-
 import path from 'path'
-
 // for server-side rendering
 // react modules
 import React from 'react'
@@ -27,19 +25,15 @@ import theme from './../client/theme'
 const CURRENT_WORKING_DIR = process.cwd()
 
 const app = express()
-/**... configure express ... */
-
+// configure express
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(compression())
 app.use(cors())
-
 app.use('/', userRoutes)
 app.use('/', authRoutes)
-
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
-
 app.use((err, req, res, next) => {
     if(err.name === 'Unauthorized error'){
         res.status(401).json({"error": err.name + ": " + err.message})

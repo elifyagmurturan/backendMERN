@@ -76,10 +76,22 @@ export default function Signin(props){
                   }
                 </CardContent>
                 <CardActions>
-                  <Button color="primary" variant="contained" onClick={clickSubmit} 
-                    className={classes.submit}>Submit</Button>
+                  <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Submit</Button>
                 </CardActions>
               </Card>
+
+            <Dialog open={values.open} disableBackdropClick={true}>
+            <DialogTitle>New Account</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                  Successfully signed in.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Link to="/">
+                </Link>
+            </DialogActions>
+            </Dialog>
             </div>
             )
 

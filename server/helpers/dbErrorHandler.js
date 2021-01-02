@@ -32,4 +32,4 @@ const getUniqueErrorMessage = (err) => {
 }
 
 
-export default {getErrorMessage}
+export default {getErrorMessage, getUniqueErrorMessage}

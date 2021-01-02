@@ -1,6 +1,14 @@
 import React, {Component, useState, useEffect} from 'react'
+import Card, {CardActions, CardContent} from 'material-ui/Card'
+// import {makeStyles} from '@material-ui/core/styles'
+import Button from 'material-ui/Button'
+import TextField from 'material-ui/TextField'
+import Typography from 'material-ui/Typography'
+import Icon from 'material-ui/Icon'
+import UseStyles from './../styles'
 
 export default function Signup() {
+  const classes = UseStyles()
     const [values, setValue] = useState({
         name: '',
         password: '',

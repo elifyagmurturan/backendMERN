@@ -10,10 +10,10 @@ import ArrowForward from '@material-ui/icons/ArrowForward'
 import Person from '@material-ui/icons/Person'
 import {Link} from 'react-router-dom'
 import {list} from './api-user.js'
-
+import UseStyles from './../styles'
 
 export default function Users() {
-  
+    const classes = UseStyles()
     const [users, setUsers] = useState([])
 
     useEffect(() => {

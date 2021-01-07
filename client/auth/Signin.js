@@ -1,5 +1,4 @@
-import { SingleBedOutlined } from "@material-ui/icons"
-import React, {Component, useState, useEffect} from 'react'
+import React, {Component} from 'react'
 import Card, {CardActions, CardContent} from 'material-ui/Card'
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
@@ -8,91 +7,106 @@ import Icon from 'material-ui/Icon'
 import PropTypes from 'prop-types'
 import {withStyles} from 'material-ui/styles'
 import auth from './../auth/auth-helper'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import {signin} from './api-auth.js'
-import UseStyles from './../styles'
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
+import {makeStyles} from '@material-ui/core/styles'
 
 
-export default function Signin(props){
-    const classes = UseStyles()
-    const[values, setValues] = useState({
+const styles = theme => ({
+  card: {
+    maxWidth: 600,
+    margin: 'auto',
+    textAlign: 'center',
+    marginTop: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit * 2
+  },
+  error: {
+    verticalAlign: 'middle'
+  },
+  title: {
+    marginTop: theme.spacing.unit * 2,
+    color: theme.palette.openTitle
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 300
+  },
+  submit: {
+    margin: 'auto',
+    marginBottom: theme.spacing.unit * 2
+  }
+})
+
+class Signin extends Component {
+
+    state = {
         email: '',
         password: '',
         error: '',
         redirectToReferrer: false
-    })
-
-    const handleChange = name => event => {
-      setValues({...values, [name]: event.target.value})
     }
 
-    const clickSubmit = () => {
-        const user = {
-            email: values.email || undefined,
-            password: values.password || undefined
-        }
-
-        signin(user).then((data) => {
-            if(data.error){
-                setValues({... values, error: data.error})
-            } else{
-                auth.authenticate(data, () => {
-                    setValues({... values, error:'', redirectToReferrer:true})
-                })
-            }
-        })
+    clickSubmit = () => {
+      const user = {
+          email: this.state.email || undefined,
+          password: this.state.password || undefined
       }
-    
-        const {from} = props.location.state || {
-            from: {
-            pathname: '/'
-            }
+
+      signin(user).then((data) => {
+          if(data.error){
+              this.setState({error: data.error})
+          } else{
+              auth.authenticate(data, () => {
+                  this.setState({redirectToReferrer:true})
+              })
+          }
+      })
+    }
+
+    handleChange = name => event => {
+      this.setState({[name]: event.target.value})
+    }
+
+    render() {
+    const {classes} = this.props
+    const {from} = this.props.location.state || {
+        from: {
+        pathname: '/'
         }
-        const {redirectToReferrer} = values
-        if(redirectToReferrer) {
-            return(<Redirect to={from}/>)
-        }
+    }
 
-        return (
-            <div>
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography variant="h6" className={classes.title}>
-                    Signin
-                  </Typography>
-                  <TextField id="email" type="email" label="Email" 
-                     className={classes.textField} 
-                     value={values.email} onChange={handleChange('email')} 
-                     margin="normal"/>
-                  <br/>
-                  <TextField id="password" type="password" label="Password" 
-                     className={classes.textField} value={values.password} 
-                     onChange={handleChange('password')} margin="normal"/>
-                  <br/> 
-                  {
-                    values.error && (<Typography component="p" color="error">
-                      <Icon color="error" className={classes.error}>error</Icon>
-                      {values.error}</Typography>)
-                  }
-                </CardContent>
-                <CardActions>
-                  <Button color="primary" variant="contained" onClick={clickSubmit} className={classes.submit}>Submit</Button>
-                </CardActions>
-              </Card>
+    const {redirectToReferrer} = this.state
+    if(redirectToReferrer) {
+        return(<Redirect to={from}/>)
+    }
 
-            <Dialog open={values.open} disableBackdropClick={true}>
-            <DialogTitle>New Account</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                  Successfully signed in.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Link to="/">
-                </Link>
-            </DialogActions>
-            </Dialog>
-            </div>
-            )
-
+    return (
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography type="headline" component="h2" className={classes.title}>
+            Sign In
+          </Typography>
+          <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal"/><br/>
+          <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal"/>
+          <br/> {
+            this.state.error && (<Typography component="p" color="error">
+              <Icon color="error" className={classes.error}>error</Icon>
+              {this.state.error}
+            </Typography>)
+          }
+        </CardContent>
+        <CardActions>
+          <Button color="primary" variant="raised" onClick={this.clickSubmit} className={classes.submit}>Submit</Button>
+        </CardActions>
+      </Card>
+    )
+  }
 }
+
+Signin.PropTypes = {
+  classes: PropTypes.object.isRequired
+}
+
+export default withStyles(styles)(Signin)

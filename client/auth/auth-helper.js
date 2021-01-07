@@ -16,7 +16,7 @@ const auth = {
     else
         return false
 },
-    clearJWT(cb) {
+    signout(cb) {
     if(typeof window !== 'undefined')
         sessionStorage.removeItem('jwt')
     
@@ -24,7 +24,7 @@ const auth = {
     signout().then((data)=> {
         document.cookie = "t=; expires= Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     })
-}
+    }  
 }
 
 export default auth

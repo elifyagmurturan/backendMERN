@@ -26,6 +26,7 @@ const Menu = withRouter(({history}) => (
             </Link>
             <Link to="/users">
             <Button style={isActive(history, '/users')}>Users</Button>
+            </Link>
         {
         !auth.isAuthenticated() && (<span>
             <Link to="/signup">
@@ -45,12 +46,11 @@ const Menu = withRouter(({history}) => (
             </Button>
         </Link>
         <Button color="inherit" 
-                onClick={() => { auth.clearJWT(() => history.push('/')) }}>
+                onClick={() => { auth.signout(() => history.push('/')) }}>
                 Sign out
         </Button>
         </span>)
         }
-            </Link>
             </Toolbar>
     </AppBar>))
 

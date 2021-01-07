@@ -10,35 +10,57 @@ import ArrowForward from '@material-ui/icons/ArrowForward'
 import Person from '@material-ui/icons/Person'
 import {Link} from 'react-router-dom'
 import {list} from './api-user.js'
-import UseStyles from './../styles'
 
-export default function Users() {
-    const classes = UseStyles()
-    const [users, setUsers] = useState([])
+const styles = theme => ({
+  card: {
+    maxWidth: 600,
+    margin: 'auto',
+    textAlign: 'center',
+    marginTop: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit * 2
+  },
+  error: {
+    verticalAlign: 'middle'
+  },
+  title: {
+    marginTop: theme.spacing.unit * 2,
+    color: theme.palette.openTitle
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 300
+  },
+  submit: {
+    margin: 'auto',
+    marginBottom: theme.spacing.unit * 2
+  }
+})
 
-    useEffect(() => {
-      const abortController = new AbortController()
-      const signal = abortController.signal
+class Users extends Component {
+  state = {
+    users: []
+  }
 
-      list(signal).then((data) => {
-        if(data && data.error){
-          console.log(data.error)
-        } else{
-          setUsers(data)
-        }
-      })
-      return function cleanup(){
-        abortController.abort()
+  componentDidMount() {
+    list.then((data)=> {
+      if(data.error){
+        console.log(data.error)
+      } else{
+        this.setState({users:data})
       }
-    }, [])
+    })
+  }
 
+  render(){
+    const {classes} = this.props
     return (
         <Paper className={classes.root} elevation={4}>
           <Typography variant="h6" className={classes.title}>
             All Users
           </Typography>
           <List dense>
-           {users.map((item, i) => {
+           {this.state.users.map((item, i) => {
             return <Link to={"/user/" + item._id} key={i}>
                       <ListItem button>
                         <ListItemAvatar>
@@ -59,4 +81,11 @@ export default function Users() {
         </List>
       </Paper>
     )                           
+  }
 }
+
+Users.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+
+export default withStyles(styles)(Users)

@@ -1,44 +1,70 @@
-import React, {Component, useState, useEffect} from 'react'
+import React, {Component} from 'react'
 import Card, {CardActions, CardContent} from 'material-ui/Card'
-// import {makeStyles} from '@material-ui/core/styles'
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
 import Typography from 'material-ui/Typography'
 import Icon from 'material-ui/Icon'
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
-import UseStyles from './../styles'
-import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types'
+import {withStyles} from 'material-ui/styles'
 import {create} from './api-user.js'
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
+import {Link} from 'react-router-dom'
 
-export default function Signup() {
-  const classes = UseStyles()
-    const [values, setValue] = useState({
+const styles = theme => ({
+  card: {
+    maxWidth: 600,
+    margin: 'auto',
+    textAlign: 'center',
+    marginTop: theme.spacing.unit * 5,
+    paddingBottom: theme.spacing.unit * 2
+  },
+  error: {
+    verticalAlign: 'middle'
+  },
+  title: {
+    marginTop: theme.spacing.unit * 2,
+    color: theme.palette.openTitle
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 300
+  },
+  submit: {
+    margin: 'auto',
+    marginBottom: theme.spacing.unit * 2
+  }
+})
+
+class Signup extends Component {
+    values = {
         name: '',
         password: '',
         email: '',
         open: false,
         error: ''
-    })
-
-    const handleChange = name => event => {
-        setValues({...values, [name]: event.target.value})
     }
 
-    const clickSubmit = () => {
+    handleChange = name => event => {
+        this.setState({[name]: event.target.value})
+    }
+
+    clickSubmit = () => {
         const user = {
-            name: values.name || undefined,
-            email: values.email || undefined,
-            password: values.password || undefined
+            name: this.values.name || undefined,
+            email: this.values.email || undefined,
+            password: this.values.password || undefined
         }
         create(user).then((data) => {
             if(data.error){
-                setValues({...values, error: data.error})
+                this.setState({error: data.error})
             } else{
-                setValues({...values, error: '', open: true})
+                this.setState({error: '', open: true})
             }
         })
     }
-
+    render() {
+      const {classes} = this.props
     return (
     <div>
       <Card className={classes.card}>
@@ -48,31 +74,31 @@ export default function Signup() {
           </Typography>
           <TextField id="name" label="Name" 
              className={classes.textField} 
-             value={values.name} onChange={handleChange('name')} 
+             value={this.values.name} onChange={this.handleChange('name')} 
              margin="normal"/>
           <br/>
           <TextField id="email" type="email" label="Email" 
              className={classes.textField} 
-             value={values.email} onChange={handleChange('email')} 
+             value={this.values.email} onChange={this.handleChange('email')} 
              margin="normal"/>
           <br/>
           <TextField id="password" type="password" label="Password" 
-             className={classes.textField} value={values.password} 
-             onChange={handleChange('password')} margin="normal"/>
+             className={classes.textField} value={this.values.password} 
+             onChange={this.handleChange('password')} margin="normal"/>
           <br/> 
           {
-            values.error && (<Typography component="p" color="error">
+            this.values.error && (<Typography component="p" color="error">
               <Icon color="error" className={classes.error}>error</Icon>
-              {values.error}</Typography>)
+              {this.values.error}</Typography>)
           }
         </CardContent>
         <CardActions>
-          <Button color="primary" variant="contained" onClick={clickSubmit} 
+          <Button color="primary" variant="contained" onClick={this.clickSubmit} 
             className={classes.submit}>Submit</Button>
         </CardActions>
       </Card>
 
-    <Dialog open={values.open} disableBackdropClick={true}>
+    <Dialog open={this.values.open} disableBackdropClick={true}>
     <DialogTitle>New Account</DialogTitle>
     <DialogContent>
       <DialogContentText>
@@ -91,4 +117,7 @@ export default function Signup() {
     </div>
     )
 
+    }
 }
+
+export default withStyles(styles)(Signup)

@@ -35,6 +35,9 @@ const list = async (req, res) => {
 const userByID = async (req, res, next, id) => {
     try{
         let user= await User.findById(id)
+        .populate('following', '_id name')
+        .populate('followers', '_id name')
+        .exec()
         if(!user)
             return res.status('400').json({
                 error: "User not found"
@@ -93,6 +96,60 @@ const photo = (req, res, next) => {
         return res.send(req.profile.photo.data)
     }
     next()
+}
+
+const addFollowing = async (req, res, next) => {
+    User.findByIdAndUpdate(req.body.userId, {$push: {following: req.body.followId}}, (err, result) => {
+        if(err){
+            return res.status(400).json({
+                error: errorHandler.getErrorMessage(err)
+            })
+        }
+        next()
+    })
+}
+
+const addFollower = (req, res) => {
+    User.findByIdAndUpdate(req.body.followId, {$push: {followers: req.body.userId}}m {new: true})
+    .populate('following', '_id name')
+    .populate('followers', '_id name')
+    .exec((err, result) => {
+        if(err){
+            return res.status(400).json({
+                error: errorHandler.getErrorMessage(err)
+            })
+        }
+        result.hashed_password = undefined
+        result.salt = undefined
+        res.json(result)
+    })
+}
+
+const removeFollowing = (req, res, next) => {
+    User.findByIdAndUpdate(req.body.userId, {$pull: {following: req.body.unfollowId}}, (err, result) => {
+        if(err){
+            return res.status(400).json({
+                error: errorHandler.getErrorMessage(err)
+            })
+        }
+        next()
+    })
+}
+
+const removeFollower = (req, res) => {
+    User.findByIdAndUpdate(req.body.unfollowId, {$pull: {followers: req.body.userId}}, {new:true})
+    .populate('following', '_id name')
+    .populate('followers', '_id name')
+    .exec((err, result) => {
+        if(err){
+            return res.status(400).json({
+                error: errorHandler.getErrorMessage(err)
+            })
+        }
+        result.hashed_password = undefined
+        result.salt = undefined
+        res.json(result)
+    })
 }
 const remove = async (req, res) => {
     try{

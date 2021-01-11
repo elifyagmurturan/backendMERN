@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    about: {
+        type: String,
+        trim: true
+    },
     updated: Date,
     hashed_password: {
         type: String,

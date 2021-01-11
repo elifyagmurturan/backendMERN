@@ -7,10 +7,8 @@ import Icon from 'material-ui/Icon'
 import PropTypes from 'prop-types'
 import {withStyles} from 'material-ui/styles'
 import auth from './../auth/auth-helper'
-import {Redirect, Link} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {signin} from './api-auth.js'
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle} from 'material-ui/Dialog'
-import {makeStyles} from '@material-ui/core/styles'
 
 
 const styles = theme => ({
@@ -105,7 +103,7 @@ class Signin extends Component {
   }
 }
 
-Signin.PropTypes = {
+Signin.propTypes = {
   classes: PropTypes.object.isRequired
 }
 

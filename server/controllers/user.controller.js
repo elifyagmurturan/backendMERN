@@ -110,7 +110,7 @@ const addFollowing = async (req, res, next) => {
 }
 
 const addFollower = (req, res) => {
-    User.findByIdAndUpdate(req.body.followId, {$push: {followers: req.body.userId}}m {new: true})
+    User.findByIdAndUpdate(req.body.followId, {$push: {followers: req.body.userId}}, {new: true})
     .populate('following', '_id name')
     .populate('followers', '_id name')
     .exec((err, result) => {
@@ -151,6 +151,19 @@ const removeFollower = (req, res) => {
         res.json(result)
     })
 }
+
+const findPeople = async (req, res) => {
+    let following = req.profile.following
+    following.push(req.profile._id)
+    try{
+        let users = await User.find({_id:{$nin: following}}).select('name')
+        res.json(users)
+    } catch(err) {
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+        })
+    }
+}
 const remove = async (req, res) => {
     try{
         let user = req.profile
@@ -165,5 +178,5 @@ const remove = async (req, res) => {
     }
 }
 
-export default {create, list, userByID, read, update, remove}
+export default {create, list, userByID, read, update, defaultPhoto, photo, addFollowing, addFollower, removeFollowing, removeFollower, remove}
 

@@ -7,7 +7,7 @@ import AppBar from 'material-ui/AppBar'
 import Typography from 'material-ui/Typography'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import FollowGrid from './../user/FollowGrid'
-import PostList from './../post/PostList'
+// import PostList from './../post/PostList'
 
 class ProfileTabs extends Component {
   state = {

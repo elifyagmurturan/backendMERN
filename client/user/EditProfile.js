@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField'
 import Typography from 'material-ui/Typography'
 import Icon from 'material-ui/Icon'
 import Avatar from 'material-ui/Avatar'
-import FileUpload from 'material-ui-icons/FileUpload'
+import FileUpload from '@material-ui/icons/Publish';
 import PropTypes from 'prop-types'
 import {withStyles} from 'material-ui/styles'
 import auth from './../auth/auth-helper'
@@ -92,7 +92,7 @@ class EditProfile extends Component {
             t: jwt.token
         }, this.userData).then((data) => {
             if(data.error){
-                this.setState({error.data.error})
+                this.setState({error: data.error})
             } else{
                 this.setState({'redirectToProfile': true})
             }

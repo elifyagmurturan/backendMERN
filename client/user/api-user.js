@@ -77,8 +77,9 @@ const remove = async (params, credentials) => {
     }
 }
 
-const follow = (params, credentials, followId) => {
-    return fetch('/api/users/follow/', {
+const follow = async (params, credentials, followId) => {
+    try{
+    let response = fetch('/api/users/follow/', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -86,15 +87,16 @@ const follow = (params, credentials, followId) => {
             'Authorization': 'Bearer' + credentials.t
         },
         body: JSON.stringify({userId: params.userId, followId: followId})
-    }).then((response) => {
-        return response.json()
-    }).catch((err) => {
-        console.log(err)
     })
+    return await response.json()
+    } catch(err){
+        console.log(err)
+    }
 }
 
-const unfollow = (params, credentials, unfollowId) => {
-    return fetch('/api/users/unfollow/', {
+const unfollow = async (params, credentials, unfollowId) => {
+    try{
+        let response = fetch('/api/users/unfollow/', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -102,11 +104,27 @@ const unfollow = (params, credentials, unfollowId) => {
             'Authorization': 'Bearer' + credentials.t
         },
         body: JSON.stringify({userId: params.userId, unfollowId: unfollowId})
-    }).then((response) => {
-        return response.json()
-    }).catch((err) => {
-        console.log(err)
     })
+    return await response.json()
+    } catch(err){
+        console.log(err)
+    }
 }
 
-export {create, list, read, update, remove}
+const findPeople = async (params, credentials, signal) => {
+    try{
+        let response = await fetch('/api/users/findpeople/' + params.userId, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer' + credentials.t
+            }
+        })
+    return await response.json()
+    } catch(err){
+        console.log(err)
+    }
+}
+
+export {create, list, read, update, remove, follow, unfollow, findPeople }

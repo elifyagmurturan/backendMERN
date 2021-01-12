@@ -15,5 +15,8 @@ class FollowProfileButton extends Component {
         {this.props.following
         ? (<Button variant="raised" color="secondary" onClick={this.unfollowClick}>Unfollow</Button>)
         : (<Button variant="raised" color="primary" onClick={this.followClick}>Follow</Button>)
+        }
     }
 }
+
+export default FollowProfileButton

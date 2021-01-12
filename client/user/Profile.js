@@ -7,16 +7,16 @@ import Avatar from 'material-ui/Avatar'
 import IconButton from 'material-ui/IconButton'
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography'
-import Edit from '@material-ui/icons/Edit'
-import Divider from '@material-ui/core/Divider'
+import Edit from './EditProfile'
+import Divider from 'material-ui/Divider'
 import DeleteUser from './DeleteUser'
 import auth from './../auth/auth-helper'
 import {read} from './api-user.js'
 import {Redirect, Link} from 'react-router-dom'
-import FollowProfileButton from '@material-ui/icons/AddCircleOutline';
+import FollowProfileButton from './FollowProfileButton'
 import ProfileTabs from './../user/ProfileTabs'
-import {listByUser} from './../post/api-post.js'
-
+// import {listByUser} from './../post/api-post.js'
+import FollowGrid from './FollowGrid'
 const styles = theme => ({
   root: theme.mixins.gutters({
     maxWidth: 600,
@@ -90,27 +90,27 @@ class Profile extends Component {
     })
   }
 
-  loadPosts = (user) => {
-    const jwt = auth.isAuthenticated()
-    listByUser({
-      userId: user
-    }, {
-      t: jwt.token
-    }).then((data) => {
-      if(data.error){
-        console.log(data.error)
-      } else{
-        this.setState({posts: data})
-      }
-    })
-  }
+  // loadPosts = (user) => {
+  //   const jwt = auth.isAuthenticated()
+  //   listByUser({
+  //     userId: user
+  //   }, {
+  //     t: jwt.token
+  //   }).then((data) => {
+  //     if(data.error){
+  //       console.log(data.error)
+  //     } else{
+  //       this.setState({posts: data})
+  //     }
+  //   })
+  // }
 
-  removePost = (post) => {
-    const updatedPosts = this.state.posts
-    const index = updatedPosts.indexOf(post)
-    updatedPosts.splice(index, 1)
-    this.setState({posts: updatedPosts})
-  }
+  // removePost = (post) => {
+  //   const updatedPosts = this.state.posts
+  //   const index = updatedPosts.indexOf(post)
+  //   updatedPosts.splice(index, 1)
+  //   this.setState({posts: updatedPosts})
+  // }
   render() {
     const classes = this.props
     const photoUrl = this.state.user._id ? `/api/users/photo/${this.state.user._id}?${new Date().getTime()}`
@@ -148,7 +148,9 @@ class Profile extends Component {
               new Date(this.state.user.created)).toDateString()}/>
           </ListItem>
         </List>
-        <ProfileTabs user={this.state.user} posts={this.state.posts} removePostUpdate={this.removePost}/>
+        <FollowGrid people={this.state.followers}/>
+        <FollowGrid people={this.state.following}/>
+        {/* <ProfileTabs user={this.state.user} posts={this.state.posts} removePostUpdate={this.removePost}/> */}
       </Paper>
     )
   }

@@ -11,7 +11,7 @@ yarn install </br>
 To upgrade all packages, run: </br>
 yarn upgrade </br>
 To start Nodemon, Webpack and the server started: </br>
-yarn development
+yarn development </br>
 To create server and client side bundles: </br>
 yarn build </br>
 Then, finally: </br>

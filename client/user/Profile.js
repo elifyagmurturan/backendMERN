@@ -17,6 +17,7 @@ import FollowProfileButton from './FollowProfileButton'
 import ProfileTabs from './../user/ProfileTabs'
 // import {listByUser} from './../post/api-post.js'
 import FollowGrid from './FollowGrid'
+
 const styles = theme => ({
   root: theme.mixins.gutters({
     maxWidth: 600,
@@ -90,20 +91,20 @@ class Profile extends Component {
     })
   }
 
-  // loadPosts = (user) => {
-  //   const jwt = auth.isAuthenticated()
-  //   listByUser({
-  //     userId: user
-  //   }, {
-  //     t: jwt.token
-  //   }).then((data) => {
-  //     if(data.error){
-  //       console.log(data.error)
-  //     } else{
-  //       this.setState({posts: data})
-  //     }
-  //   })
-  // }
+  loadPosts = (user) => {
+    const jwt = auth.isAuthenticated()
+    listByUser({
+      userId: user
+    }, {
+      t: jwt.token
+    }).then((data) => {
+      if(data.error){
+        console.log(data.error)
+      } else{
+        this.setState({posts: data})
+      }
+    })
+  }
 
   // removePost = (post) => {
   //   const updatedPosts = this.state.posts

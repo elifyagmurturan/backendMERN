@@ -1,4 +1,8 @@
+## MERN Social Media App
 
+This is a practice from the book Full-Stack React Projects by Shama Hoque, Packt Publishing. It uses MongoDB, Express.js, React.js and Node.js.
+
+On this social media project, people can follow, unfollow people, add or remove comments and perform various other social media practices.
 
 
 # Setup, installation, how to run:
@@ -16,9 +20,3 @@ To create server and client side bundles: </br>
 yarn build </br>
 Then, finally: </br>
 yarn start
-
-## MERN Social Media App
-
-This is a practice from Full-Stack React Projects by Shama Hoque, Packt Publishing. It uses MongoDB, Express.js, React.js and Node.js.
-
-On this social media project, people can follow, unfollow people, add or remove comments and perform various other social media practices.
